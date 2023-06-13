@@ -73,3 +73,5 @@ end
 gem 'bootstrap-sass'
 gem 'jquery-rails'
 gem 'sass-rails'
+gem 'jquery-ui-rails'
+gem 'turbolinks'

@@ -3,7 +3,7 @@ class StudentsController < ApplicationController
 
   # GET /students or /students.json
   def index
-    @students = Student.all
+    @users = User.where.not(id: current_user.id)
   end
 
   # GET /students/1 or /students/1.json
@@ -13,10 +13,38 @@ class StudentsController < ApplicationController
   # GET /students/new
   def new
     @student = Student.new
+
   end
 
   # GET /students/1/edit
   def edit
+  end
+
+  def add_friend
+    @frinds = Friend.create(sender_id: params[:sender_id], receiver_id: params[:receiver_id])
+    redirect_to students_url 
+  end
+
+  def delete_request
+    @friend = Friend.where(sender_id: params[:sender_id], receiver_id: params[:receiver_id]).first
+    @friend.destroy if @friend.present?
+    if params[:cancel_request]
+      redirect_to my_request_path
+    else
+     redirect_to students_path
+    end
+  end
+
+  def accepted_request
+    @frind = Friend.where(sender_id: params[:sender_id], receiver_id: params[:receiver_id]).last
+    @frind.update(is_accept: true)
+    # room = params[:sender_id] + params[:receiver_id]
+    @room = Room.create(sender_id: params[:sender_id], receiver_id: params[:receiver_id])
+    redirect_to students_path
+   end
+
+  def my_request
+    @receive = current_user.receive_requests
   end
 
   # POST /students or /students.json

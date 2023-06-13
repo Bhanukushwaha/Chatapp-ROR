@@ -1,0 +1,55 @@
+<p style="color: green"><%= notice %></p>
+
+<table id="myTable" >
+  <tr class="header">    
+    <th>username</th>
+    <th>action</th>
+  </tr>
+  <tbody>
+    <% @friends.each do |friend| %>
+      <tr>
+        <td><%= friend.sender.username %></td>       
+         <td><%= link_to "Send Message", message_path(sender_id: current_user.id, receiver_id: friend.id),class: "btn btn-outline-danger" %> </td>      
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<style>
+* {
+  box-sizing: border-box;
+}
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 70%;
+  border-radius: 10px;
+  font-size: 16px;
+  padding: 12px 20px 8px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 14px;
+}
+
+#myTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 5px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  background-color: #f1f1f1;
+}
+</style>
+

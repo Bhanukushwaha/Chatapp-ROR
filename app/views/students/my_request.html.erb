@@ -1,0 +1,63 @@
+<p id="notice"><%= notice %></p>
+<table id="myTable">
+	<thead>
+		<tr class="header">
+			<th>username</th>
+			<th colspan="3">action</th>
+		</tr>
+	</thead>
+	<tbody>
+	  <% @receive.each do |rec_request| %>
+		  <% if rec_request.is_accept != true %>	
+			  <tr>
+					<td><%= rec_request&.sender&.username %></td>					
+					<td><%= link_to "Delete request", delete_request_path(receiver_id: current_user.id, sender_id: rec_request.sender.id, cancel_request: true),class: "btn btn-outline-danger" %></td>
+					<td>
+						<% if rec_request.is_accept %>
+						 <a href="#" class="btn btn-outline-success " >Friend</a>
+						<% else %>
+						 <%= link_to "Accepted_request", accepted_request_path(receiver_id: current_user.id, sender_id: rec_request.sender.id) ,class: "btn btn-outline-success"%>
+						<% end %>
+					</td>
+			  </tr>
+			<% end %>
+	  <% end %>
+	</tbody>
+</table>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 70%;
+  border-radius: 10px;
+  font-size: 16px;
+  padding: 12px 20px 8px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 14px;
+}
+
+#myTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 7px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  background-color: #f1f1f1;
+}
+</style>

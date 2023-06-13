@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-
   def create
     user = User.find_by(username: params[:session][:username])
     if user
@@ -14,4 +13,7 @@ class SessionsController < ApplicationController
     redirect_to root_path
   end
 
+  def user_modal
+    
+  end
 end
