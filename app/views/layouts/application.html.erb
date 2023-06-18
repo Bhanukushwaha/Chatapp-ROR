@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -17,12 +18,44 @@
   </head>
 
   <body>
-    <a href="/">Student</a>
-    <a href="/rooms">Rooms</a>
-    <a href="/my_request">My_request</a>
-    <a href="/friend_list">Friends</a>
-    <%= link_to "signin", user_modal_path, remote: true %>    
-    <div id="remote-container"></div>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #DDE6ED;">
+      <a class="navbar-brand" href="#">Home</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item <%= (params[:controller] == "students" && params[:action] == "index") ? 'active' : "" %> ">
+            <a class="nav-link" href="/">User</a>
+          </li>          
+           <li class="nav-item <%= (params[:controller] == "students" && params[:action] == "my_request") ? 'active' : "" %>">
+            <a class="nav-link" href="/my_request">Myrequest</a>
+          </li>          
+          <li class="nav-item <%= (params[:controller] == "friends" && params[:action] == "friend_list") ? 'active' : "" %>">
+            <a class="nav-link" href="/friend_list">Friends</a>
+          </li>
+          <li class="nav-item <%= (params[:controller] == "rooms" && params[:action] == "index") ? 'active' : "" %>">
+            <a class="nav-link" href="/rooms">Massage</a>
+          </li>          
+        </ul>
+        <ul class="navbar-nav my-2 my-lg-0">      
+          <% if user_signed_in? %>
+          <li class="nav-item">    
+            <strong class="nav-link"><%= current_user.email %>(<%= current_user.id %>)</strong>
+          </li>
+          <%= link_to "Logout", destroy_user_session_path, class: "nav-link", method: :delete %>
+            <%= link_to "modal", user_modal_path, remote: true , class: "nav-link" %>
+            
+          <% else %>
+            <%= link_to "Sign up", new_user_registration_path, class: "nav-link"  %> 
+            <%= link_to "Login", new_user_session_path, class: "nav-link"  %>
+          <% end %>
+        </ul>
+        
+      </div>
+    </nav>       
+    <div id="remote_container"></div>
     <%= yield %>
   </body>
 </html>
@@ -34,6 +67,9 @@
   <%= ".cont-#{current_user&.id}" %> {
   display: flex;
   justify-content: flex-end
+  }
+  .active{
+    background-color: azure;
   }
 </style>
 

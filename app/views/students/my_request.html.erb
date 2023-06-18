@@ -3,6 +3,7 @@
 	<thead>
 		<tr class="header">
 			<th>username</th>
+			<th>Email</th>
 			<th colspan="3">action</th>
 		</tr>
 	</thead>
@@ -10,13 +11,14 @@
 	  <% @receive.each do |rec_request| %>
 		  <% if rec_request.is_accept != true %>	
 			  <tr>
-					<td><%= rec_request&.sender&.username %></td>					
+					<td><%= rec_request&.sender&.username %></td>
+					<td><%= rec_request&.sender&.email %></td>
 					<td><%= link_to "Delete request", delete_request_path(receiver_id: current_user.id, sender_id: rec_request.sender.id, cancel_request: true),class: "btn btn-outline-danger" %></td>
 					<td>
 						<% if rec_request.is_accept %>
 						 <a href="#" class="btn btn-outline-success " >Friend</a>
 						<% else %>
-						 <%= link_to "Accepted_request", accepted_request_path(receiver_id: current_user.id, sender_id: rec_request.sender.id) ,class: "btn btn-outline-success"%>
+						 <%= link_to "Accept_request", accepted_request_path(receiver_id: current_user.id, sender_id: rec_request.sender.id) ,class: "btn btn-outline-success"%>
 						<% end %>
 					</td>
 			  </tr>

@@ -6,3 +6,12 @@
     <%= message.content %>
   </div>
 </div>
+
+
+<script>
+  $(document).ready(function() {
+    const newNameInput = document.getElementById("chat-text");
+    const name = newNameInput.value;
+    newNameInput.value = "";
+  });    
+</script>

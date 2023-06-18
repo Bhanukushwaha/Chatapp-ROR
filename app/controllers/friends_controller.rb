@@ -7,21 +7,22 @@ class FriendsController < ApplicationController
 
   def show
   end
+
+  def user_modal
+    @user = User.new
+  end
   
   def friend_list
-    @friends = current_user.receive_requests.where(is_accept: true)
+    @friends1 = current_user.receive_requests.where(is_accept: true)
+    @friends2 = current_user.send_requests.where(is_accept: true)
+    @friends = @friends1 + @friends2
   end
 
   def messages
-    room = params[:sender_id] + params[:receiver_id]
+   @single_room = Room.find_by(sender_id: params[:sender_id].to_i, receiver_id: params[:receiver_id].to_i) || Room.find_by(sender_id: params[:receiver_id].to_i, receiver_id: params[:sender_id].to_i)
     @friend = User.find_by_id(params[:receiver_id])
-    @single_room = Room.find_by_name(room)
-    if !@single_room.present?
-      @single_room = Room.create(sender_id: params[:sender_id], receiver_id: params[:receiver_id], name: room)
-    end
     if @single_room.present?
-      redirect_to "/rooms/#{@single_room.id}"
+      redirect_to "/rooms/#{@single_room.id}?name=#{params[:user_name]}"
     end
-    # @friends = current_user.friends
   end
 end
