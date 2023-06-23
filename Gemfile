@@ -76,3 +76,5 @@ gem 'jquery-rails'
 gem 'sass-rails'
 gem 'jquery-ui-rails'
 gem 'turbolinks'
+gem 'carrierwave'
+gem "letter_opener", group: :development

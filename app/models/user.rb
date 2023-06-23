@@ -9,4 +9,7 @@ class User < ApplicationRecord
   scope :all_except, ->(user) { where.not(id: user) }
   after_create_commit { broadcast_append_to "users" }
   has_many :messages
+  has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
 end

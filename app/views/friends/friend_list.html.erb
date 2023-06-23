@@ -7,7 +7,6 @@
     <th colspan="2">action</th>
   </tr>
   <tbody>
-    <%# debugger %>
     <% @friends.each do |friend| %>
       <tr>
         <% if (friend.sender.id == current_user.id) &&  friend.is_sender %>
@@ -17,15 +16,12 @@
         <% else %>
           <td><%= friend.sender.username %></td>
           <td><%= friend.sender.email %></td>
-         <td><%= link_to "Send Message", message_path(sender_id: friend.sender_id, receiver_id: current_user.id),class: "btn btn-outline-danger" %> </td>      
-
+         <td><%= link_to "Send Message", message_path(sender_id: friend.sender_id, receiver_id: current_user.id),class: "btn btn-outline-danger" %> </td>
         <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-
 <style>
 * {
   box-sizing: border-box;

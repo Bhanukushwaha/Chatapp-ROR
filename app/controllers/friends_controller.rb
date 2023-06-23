@@ -2,12 +2,6 @@ class FriendsController < ApplicationController
   def index
   end
 
-  def edit
-  end
-
-  def show
-  end
-
   def user_modal
     @user = User.new
   end

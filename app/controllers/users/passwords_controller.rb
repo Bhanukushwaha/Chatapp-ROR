@@ -7,10 +7,16 @@ class Users::PasswordsController < Devise::PasswordsController
   # end
 
   # POST /resource/password
-  # def create
-  #   super
-  # end
-
+  def create
+    user= User.find_by_email(params[:user][:email])
+    if user.present?
+      UserMailer.with(user: user).welcome_email.deliver_later
+      @error = "User forword successfully?"
+      # @error = "user have a allready present?"
+    else
+      @error = "User Not Found?"      
+    end
+  end
   # GET /resource/password/edit?reset_password_token=abcdef
   # def edit
   #   super

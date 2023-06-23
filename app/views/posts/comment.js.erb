@@ -1,0 +1,6 @@
+$("#comment_section_<%= @post.id%>").html("<%= escape_javascript(render partial: 'posts/comments' )%>");
+$(document).ready(function() {
+  const newNameInput = document.getElementById("title");
+  // const name = newNameInput.value;
+  newNameInput.value = "";
+});    

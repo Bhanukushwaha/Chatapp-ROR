@@ -1,0 +1,16 @@
+<% post = (@post || post) %>
+<% if !Like.where(post_id: post.id, :user_id=>current_user.id).present? %>
+  <%= form_tag '/like', :method => 'get',remote: true do %>
+   <%= hidden_field_tag "post_id" ,nil ,:value => post.id%>
+    <p>
+     <%= submit_tag "likes(#{post.likes.count})", :name => nil %>
+    </p>
+  <% end %>
+ <% else %>
+  <%= form_tag '/unlike', :method => 'get',remote: true do %>
+   <%= hidden_field_tag "post_id" ,nil ,:value => post.id%>
+    <p>
+     <%= submit_tag "unlike(#{post.likes.count})", :name => nil %>
+    </p>     
+  <% end %>
+<%end%>

@@ -1,0 +1,68 @@
+<% @posts.each do |post|%>
+  <section style="background-color: #eee;">
+    <div class="container my-2 py-5">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-12 col-lg-10 col-xl-8">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-start align-items-center">               
+                <div >
+                <strong class="fw-bold text-primary">
+                  <%= post.user.username %>
+                </strong>                                
+                <strong>Title:</strong>
+                <%= post.title %>
+                <strong>description:</strong>
+                <%= post.description %>                
+                <p class="text-muted small mb-0">
+                  <strong>Shared publicly:-</strong>
+                  <%= post.created_at.strftime("%d-%b-%Y / %R") %>
+                </p>
+              </div>
+              </div>
+              <p class="mt-3 mb-4 pb-2">
+                <%= image_tag post.image, style: "width: 100%; height: 300px; " %>              
+              </p>
+              <div class="small d-flex justify-content-start">
+              	<div id="like_section_<%= post.id%>">
+              		<%= render partial: "posts/like_unlike_form", locals: {post: post} %>
+	                <!-- <%# if !Like.where(post_id: post.id, :user_id=>current_user.id).present? %>
+	                  <%#= form_tag '/like', :method => 'get',remote: true do %>
+	                   <%#= hidden_field_tag "post_id" ,nil ,:value => post.id%>
+	                    <p>
+	                     <%#= submit_tag "likes(#{post.likes.count})", :name => nil %>
+	                    </p>
+	                  <%# end %>
+	                 <%# else %>
+	                  <%#= form_tag '/unlike', :method => 'get',remote: true do %>
+	                   <%#= hidden_field_tag "post_id" ,nil ,:value => post.id%>
+	                    <p>
+	                     <%#= submit_tag "unlike(#{post.likes.count})", :name => nil %>
+	                    </p>     
+	                  <%# end %>
+	                <%#end%> -->
+                </div>
+                <div class="col-md-12">                
+                  <%= form_tag '/comment', remote: true, :method => 'get' do %>
+                    <%= hidden_field_tag "post_id" ,nil, value:  post.id %>
+                    <%= hidden_field_tag "user_id" ,nil, value:  current_user.id %>
+                    <p>
+                      <%= text_field_tag :title %>
+                      <%= submit_tag "submit", :name => nil %>
+                    </p> 
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+              <div id="comment_section_<%= post.id%>">
+              <%= render partial: "posts/comments", locals: {post: post} %>
+            </div>            
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+ 

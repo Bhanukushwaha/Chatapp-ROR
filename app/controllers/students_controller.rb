@@ -6,24 +6,11 @@ class StudentsController < ApplicationController
     @users = User.where.not(id: current_user.id)
   end
 
-  # GET /students/1 or /students/1.json
-  def show
-  end
-
-  # GET /students/new
-  def new
-    @student = Student.new
-
-  end
-
-  # GET /students/1/edit
-  def edit
-  end
-
+  
   def add_friend
     if @frinds = Friend.where(sender_id: params[:receiver_id], receiver_id:  current_user.id).present?
       redirect_to my_request_path
-      else
+    else
       @frinds = Friend.create(sender_id: current_user.id, receiver_id: params[:receiver_id], is_sender: true)
       redirect_to students_url 
     end

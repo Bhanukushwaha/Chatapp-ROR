@@ -3,13 +3,16 @@
     <h5> Hi <%= @current_user.username %> </h5>
     <h4> Users </h4>
     <div>
-      <table>
-        
+      <table>        
       <%= turbo_stream_from "users" %>
       <div id="users">
         <% @friends.each do |friend| %>
           <tr>
-             <td><%= link_to "#{friend.sender.username}", message_path(sender_id: friend.sender_id, receiver_id: current_user.id, user_name: friend.sender.username) %> </t> 
+          <% if (friend.sender.id == current_user.id) &&  friend.is_sender %>
+            <td><%= link_to "#{friend.receiver.username}", message_path(sender_id: friend.receiver.id, receiver_id: current_user.id, user_name: friend.receiver.username),class: "btn btn-outline-success" %> </td>
+            <% else %>
+            <td><%= link_to "#{friend.sender.username}", message_path(sender_id: friend.sender_id, receiver_id: current_user.id, user_name: friend.sender.username) %> </td>
+            <% end %>
           </tr>
         <% end %>
       </div>

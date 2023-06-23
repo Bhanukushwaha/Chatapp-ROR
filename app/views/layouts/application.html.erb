@@ -19,13 +19,19 @@
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #DDE6ED;">
-      <a class="navbar-brand" href="#">Home</a>
+      <a class="navbar-brand" href="#">FaceBook</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+          <li class="nav-item  ">
+            <a class="nav-link" href="/home">Home</a>
+          </li>
+          <li class="nav-item  ">
+            <a class="nav-link" href="/posts">Posts</a>
+          </li>
           <li class="nav-item <%= (params[:controller] == "students" && params[:action] == "index") ? 'active' : "" %> ">
             <a class="nav-link" href="/">User</a>
           </li>          
@@ -45,20 +51,40 @@
             <strong class="nav-link"><%= current_user.email %>(<%= current_user.id %>)</strong>
           </li>
           <%= link_to "Logout", destroy_user_session_path, class: "nav-link", method: :delete %>
-            <%= link_to "modal", user_modal_path, remote: true , class: "nav-link" %>
-            
+            <%#= link_to "modal", user_modal_path, remote: true , class: "nav-link" %>
+            <%= link_to 'Show', user_modal_path, :class=>"btn btn-info", :remote => true, 'data-toggle' => "modal", 'data-target' => '#exampleModalLong2' %>
+
           <% else %>
             <%= link_to "Sign up", new_user_registration_path, class: "nav-link"  %> 
             <%= link_to "Login", new_user_session_path, class: "nav-link"  %>
           <% end %>
-        </ul>
-        
+        </ul>        
       </div>
-    </nav>       
+    </nav>      
     <div id="remote_container"></div>
     <%= yield %>
   </body>
 </html>
+
+<div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="eModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>        
+      </div>
+      
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>      
+      </div>
+    </div>
+  </div>
+</div>
 <style>
   <%= ".msg-#{current_user&.id}" %> {
   background-color: #007bff !important;
