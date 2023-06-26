@@ -15,21 +15,22 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    
+   
   </head>
-
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #DDE6ED;">
+    <nav class="navbar navbar-expand-lg navbar-light custom_class" style="background-color: #C0DBEA;">
       <a class="navbar-brand" href="#">FaceBook</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item  ">
+        <ul class="navbar-nav mr-auto">             
+          <li class="nav-item <%= (params[:controller] == "home" && params[:action] == "index") ? 'active' : "" %>">
             <a class="nav-link" href="/home">Home</a>
           </li>
-          <li class="nav-item  ">
+          <li class="nav-item <%= (params[:controller] == "posts") ? 'active' : "" %>">            
             <a class="nav-link" href="/posts">Posts</a>
           </li>
           <li class="nav-item <%= (params[:controller] == "students" && params[:action] == "index") ? 'active' : "" %> ">
@@ -41,7 +42,7 @@
           <li class="nav-item <%= (params[:controller] == "friends" && params[:action] == "friend_list") ? 'active' : "" %>">
             <a class="nav-link" href="/friend_list">Friends</a>
           </li>
-          <li class="nav-item <%= (params[:controller] == "rooms" && params[:action] == "index") ? 'active' : "" %>">
+          <li class="nav-item <%= (params[:controller] == "rooms") ? 'active' : "" %>">
             <a class="nav-link" href="/rooms">Massage</a>
           </li>          
         </ul>
@@ -65,6 +66,7 @@
     <%= yield %>
   </body>
 </html>
+
 
 <div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="eModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -97,5 +99,15 @@
   .active{
     background-color: azure;
   }
+  .custom_class{
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  .nav-item a:hover{
+    background-color: azure;
+  }
+  body{
+    background-image:url('/assets/image8.jpg');
+     background-size : cover;
+  }
 </style>
-

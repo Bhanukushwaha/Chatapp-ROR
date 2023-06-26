@@ -17,7 +17,6 @@
             <%= link_to "Accept Request", accepted_request_path(receiver_id: current_user.id, sender_id: user.id) ,class: "btn btn-outline-success"%>
           <% else %>
             <%= link_to "Send Request", add_friend_path(sender_id: current_user.id, receiver_id: user.id),class: "btn btn-outline-success " %>
-
            <% end %>
         </td>
       </tr>

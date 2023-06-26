@@ -8,7 +8,7 @@ class User < ApplicationRecord
   validates_uniqueness_of :username, :case_sensitive => false
   scope :all_except, ->(user) { where.not(id: user) }
   after_create_commit { broadcast_append_to "users" }
-  has_many :messages
+  has_many :messages, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy

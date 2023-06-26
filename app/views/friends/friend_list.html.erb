@@ -4,7 +4,7 @@
   <tr class="header">    
     <th>username</th>
     <th>Email</th>
-    <th colspan="2">action</th>
+    <!-- <th colspan="2">action</th> -->
   </tr>
   <tbody>
     <% @friends.each do |friend| %>
@@ -12,11 +12,11 @@
         <% if (friend.sender.id == current_user.id) &&  friend.is_sender %>
           <td><%= friend.receiver.username %></td>
           <td><%= friend.receiver.email %></td>
-         <td><%= link_to "Send Message", message_path(sender_id: friend.receiver.id, receiver_id: friend.sender_id),class: "btn btn-outline-danger" %> </td>      
+         <!-- <td><%#= link_to "Send Message", message_path(sender_id: friend.receiver.id, receiver_id: friend.sender_id),class: "btn btn-outline-danger" %> </td>       -->
         <% else %>
           <td><%= friend.sender.username %></td>
           <td><%= friend.sender.email %></td>
-         <td><%= link_to "Send Message", message_path(sender_id: friend.sender_id, receiver_id: current_user.id),class: "btn btn-outline-danger" %> </td>
+         <!-- <td><%#= link_to "Send Message", message_path(sender_id: friend.sender_id, receiver_id: current_user.id),class: "btn btn-outline-danger" %> </td> -->
         <% end %>
       </tr>
     <% end %>

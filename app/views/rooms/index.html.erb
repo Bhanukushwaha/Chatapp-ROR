@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-2 col-sm-2 text-center">
     <h5> Hi <%= @current_user.username %> </h5>
     <h4> Users </h4>
     <div>
@@ -9,9 +9,9 @@
         <% @friends.each do |friend| %>
           <tr>
           <% if (friend.sender.id == current_user.id) &&  friend.is_sender %>
-            <td><%= link_to "#{friend.receiver.username}", message_path(sender_id: friend.receiver.id, receiver_id: current_user.id, user_name: friend.receiver.username),class: "btn btn-outline-success" %> </td>
+            <td><%= link_to "#{friend.receiver.username}", message_path(sender_id: friend.receiver.id, receiver_id: current_user.id, user_name: friend.receiver.username), class: "btn active_hover #{(friend.receiver.username == params[:name]) ? 'btn-outline-success' : ''}" %> </td>
             <% else %>
-            <td><%= link_to "#{friend.sender.username}", message_path(sender_id: friend.sender_id, receiver_id: current_user.id, user_name: friend.sender.username) %> </td>
+            <td><%= link_to "#{friend.sender.username}", message_path(sender_id: friend.sender_id, receiver_id: current_user.id, user_name: friend.sender.username), class: "btn active_hover #{(friend.sender.username == params[:name]) ? 'btn-outline-success' : ''}" %> </td>
             <% end %>
           </tr>
         <% end %>
@@ -20,13 +20,45 @@
     </div>
     
   </div>
-  <div class="col-md-10 bg-dark text-light">
+  <div class="col-md-10 col-sm-10 bg-dark text-light">
     <% if @single_room %>
       <h4 class="text-center"> <%= @room_user_name %> </h4>
       <%= turbo_stream_from @single_room %>
-  		<div id="messages">
-  		</div>
-  		<%= render partial: 'layouts/new_message_form' %>
+      
+        <!-- <%# @single_room.messages.each do |message| %>
+          <p>
+            <%# if current_user.id == message.user.id%>
+              <strong class="user_message"><%#= message.content %></strong>
+            <%# else %>
+              <strong><%#= message.content %></strong>
+            <%# end %>
+          </p>             
+        <%# end %> -->
+        <% @single_room.messages.group_by {|u| u.created_at}.each do |d|
+        end
+         %>
+         <% @single_room.messages.group_by {|u| u.created_at.strftime("%a, %d %b %Y")}.each do |messages| %>
+          <p style="text-align: center;"><%= messages.first %></p>
+          <% messages.last.each do |message| %>
+            <div class="cont-<%= message.user.id %>">
+              <div class="message-box msg-<%= message.user.id %> " >
+                <% unless message.room.is_private %>
+                  <!-- <h6 class="name"><%#= message.user.username %> </h6> -->
+                <% end %>
+                <%= message.content %>-<%= message.created_at.strftime("%I:%M %p") %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+  		  <%= render partial: 'layouts/new_message_form' %>
+        <div id="messages">
+        </div>
     <% end %>
   </div>
 </div>
+
+<style type="text/css">
+  .user_message{
+    margin-left: 95%;
+  }
+</style>
