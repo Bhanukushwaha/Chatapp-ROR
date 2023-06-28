@@ -1,15 +1,16 @@
+<!-- <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name"> -->
 <% @posts.each do |post|%>
   <section style="background-color: #eee;">
     <div class="container my-0 py-5">
       <div class="row d-flex justify-content-center">
         <div class="col-md-12 col-lg-10 col-xl-8">
           <div class="card">
-            <div class="card-body">
-              <div class="d-flex flex-start align-items-center">               
+            <div id="mytable"class="card-body">
+              <div id="mytable" class="d-flex flex-start align-items-center">               
                 <div >
                 <strong class="fw-bold text-primary">
                   <%= post.user.username %>
-                </strong>                                
+                </strong>                             
                 <strong>Title:</strong>
                 <%= post.title %>
                 <strong>description:</strong>
@@ -66,3 +67,23 @@
   </section>
 <% end %>
  
+<script type="text/javascript">
+  function myFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("mytable");
+    tr = table.getElementsByTagName("li");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("span")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }       
+    }
+  }
+</script>

@@ -1,64 +1,437 @@
-<div class="row">
-  <div class="col-md-2 col-sm-2 text-center">
-    <h5> Hi <%= @current_user.username %> </h5>
-    <h4> Users </h4>
-    <div>
-      <table>        
-      <%= turbo_stream_from "users" %>
-      <div id="users">
-        <% @friends.each do |friend| %>
-          <tr>
-          <% if (friend.sender.id == current_user.id) &&  friend.is_sender %>
-            <td><%= link_to "#{friend.receiver.username}", message_path(sender_id: friend.receiver.id, receiver_id: current_user.id, user_name: friend.receiver.username), class: "btn active_hover #{(friend.receiver.username == params[:name]) ? 'btn-outline-success' : ''}" %> </td>
+<div class="container-fluid h-100">
+  <div class="row justify-content-center h-100">
+    <div class="col-md-4 col-xl-3 chat"><div class="card mb-sm-3 mb-md-0 contacts_card">
+      <div class="card-header">
+        <div class="d-flex mb-2">
+          <div class="img_cont">
+            <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
+            <span class="online_icon"></span>
+          </div>
+          <div class="user_info ">
+            <span><%= @current_user.username %></span>                
+          </div>                
+        </div>
+        <span id="action_menu_btn_pro"><i class="fas fa-ellipsis-v"></i></span>
+        <div class="action_menu_pro">
+          <ul>
+            <li><i class="fas fa-user-circle"></i> View profile</li>
+            <li><i class="fas fa-users"></i> Add to close friends</li>
+            <li><i class="fas fa-plus"></i> Add to group</li>
+            <li><i class="fas fa-ban"></i> Block</li>
+            <li><i class="fa fa-cog"></i> Settings</li>
+          </ul>
+        </div>
+        <div class="input-group ">
+          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search..." name="" class="form-control search" title="Type in a name">
+          <div class="input-group-prepend">
+            <span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="card-body contacts_body", id="mytable">
+        <ui class="contacts">
+         <%#= turbo_stream_from "users" %>
+          <% @friends.each do |friend| %>
+            <% if (friend.sender.id == current_user.id) &&  friend.is_sender %>
+              <%= link_to message_path(sender_id: friend.receiver.id, receiver_id: current_user.id, user_name: friend.receiver.username) do %>
+                <li class="friend_active <%= ((friend.receiver.username == params[:name]) || (friend.sender.username == params[:name])) ? 'active' : '' %>">
+                  <div class="d-flex bd-highlight">
+                    <div class="img_cont">
+                      <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
+                      <span class="online_icon"></span>
+                    </div>
+                    <div class="user_info">
+                      <span><%= friend.receiver.username %></span>
+                    </div>
+                  </div>
+                </li>
+              <% end %>
             <% else %>
-            <td><%= link_to "#{friend.sender.username}", message_path(sender_id: friend.sender_id, receiver_id: current_user.id, user_name: friend.sender.username), class: "btn active_hover #{(friend.sender.username == params[:name]) ? 'btn-outline-success' : ''}" %> </td>
+              <%= link_to message_path(sender_id: friend.sender_id, receiver_id: current_user.id, user_name: friend.sender.username) do %>
+                <li class="friend_active <%= ((friend.receiver.username == params[:name]) || (friend.sender.username == params[:name])) ? 'active' : '' %>">
+                  <div class="d-flex bd-highlight">
+                    <div class="img_cont">
+                      <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
+                      <span class="online_icon"></span>
+                    </div>
+                    <div class="user_info">
+                      <span><%= friend.sender.username %></span>
+                    </div>
+                  </div>
+                </li>
+              <% end %>
             <% end %>
-          </tr>
+          <% end %>
+        </ui>
+      </div>
+      <div class="card-footer"></div>
+    </div></div>
+    <div class="col-md-8 col-xl-8 chat">
+      <div class="card">
+        <div class="card-header msg_head">
+          <div class="d-flex bd-highlight">
+            <div class="img_cont">
+              <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
+              <span class="online_icon"></span>
+            </div>
+            <div class="user_info">
+              <span><%= @room_user_name %></span>
+              <p>1767 Messages</p>
+            </div>
+            <div class="video_cam">
+              <span><i class="fas fa-video"></i></span>
+              <span><i class="fas fa-phone"></i></span>
+            </div>
+          </div>
+          <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+          <div class="action_menu">
+            <ul>
+              <li><i class="fas fa-user-circle"></i> View profile</li>
+              <li><i class="fas fa-users"></i> Add to close friends</li>
+              <li><i class="fas fa-plus"></i> Add to group</li>
+              <li><i class="fas fa-ban"></i> Block</li>
+            </ul>
+          </div>
+        </div>
+        <% if @single_room %>
+          <%= turbo_stream_from @single_room %>
+          <div class="card-body msg_card_body">
+            <% @single_room.messages.group_by {|u| u.created_at.strftime("%a, %d %b %Y")}.each do |messages| %>
+              <p class="messagrdate" style="text-align: center;"><%= messages.first %></p>
+              <% messages.last.each do |message| %>
+                <div class="cont-<%= message.user.id %>">
+                  <div class="message-box msg-<%= message.user.id %> ">    
+                    <%= message.content %></br><span><%= message.created_at.strftime("%I:%M %p") %></span>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+            <div id="messages"></div>
+          </div>
+          <div class="card-footer">
+            <%= form_with(model: [@single_room ,@message], remote: true ) do |f| %>
+              <div class="input-group">
+                <!-- <div class="input-group-append">
+                  <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+                </div> -->
+                <%= f.text_field :content, id: 'chat-text', class: "form-control type_msg", autocomplete: 'off', placeholder: "Type your message..." %>
+                <!-- <input name="" class="form-control type_msg" placeholder="Type your message..."></input> -->
+                <div class="input-group-append">
+                  <%= f.submit "Send",id: "clickme", class: "input-group-text send_btn"%>
+                  <!-- <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span> -->
+                </div>
+              </div>
+            <% end %>
+          </div>
         <% end %>
       </div>
-      </table>
     </div>
-    
-  </div>
-  <div class="col-md-10 col-sm-10 bg-dark text-light">
-    <% if @single_room %>
-      <h4 class="text-center"> <%= @room_user_name %> </h4>
-      <%= turbo_stream_from @single_room %>
-      
-        <!-- <%# @single_room.messages.each do |message| %>
-          <p>
-            <%# if current_user.id == message.user.id%>
-              <strong class="user_message"><%#= message.content %></strong>
-            <%# else %>
-              <strong><%#= message.content %></strong>
-            <%# end %>
-          </p>             
-        <%# end %> -->
-        <% @single_room.messages.group_by {|u| u.created_at}.each do |d|
-        end
-         %>
-         <% @single_room.messages.group_by {|u| u.created_at.strftime("%a, %d %b %Y")}.each do |messages| %>
-          <p style="text-align: center;"><%= messages.first %></p>
-          <% messages.last.each do |message| %>
-            <div class="cont-<%= message.user.id %>">
-              <div class="message-box msg-<%= message.user.id %> " >
-                <% unless message.room.is_private %>
-                  <!-- <h6 class="name"><%#= message.user.username %> </h6> -->
-                <% end %>
-                <%= message.content %>-<%= message.created_at.strftime("%I:%M %p") %>
-              </div>
-            </div>
-          <% end %>
-        <% end %>
-  		  <%= render partial: 'layouts/new_message_form' %>
-        <div id="messages">
-        </div>
-    <% end %>
   </div>
 </div>
-
 <style type="text/css">
-  .user_message{
-    margin-left: 95%;
+    .contacts a:hover {
+      text-decoration: none;
+    }
+    body,html{
+      height: 100%;
+      margin: 0;
+      background: #7F7FD5;
+         background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+          background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    }
+    .messagrdate{
+/*    text-align: center;*/
+/*    background: azure;*/
+/*    border-radius: 10px;*/
+      color: white;
+    }
+    }
+
+    .chat{
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+    .card{
+      height: 680px;
+      border-radius: 15px !important;
+      background-color: rgba(0,0,0,0.4) !important;
+    }
+    .contacts_body{
+      padding:  0.75rem 0 !important;
+      overflow-y: auto;
+      white-space: nowrap;
+    }
+    .msg_card_body{
+      overflow-y: auto;
+    }
+    .card-header{
+      border-radius: 15px 15px 0 0 !important;
+      border-bottom: 0 !important;
+    }
+   .card-footer{
+    border-radius: 0 0 15px 15px !important;
+      border-top: 0 !important;
+  }
+    .container{
+      align-content: center;
+    }
+    .search{
+      border-radius: 15px 0 0 15px !important;
+      background-color: rgba(0,0,0,0.3) !important;
+      border:0 !important;
+      color:white !important;
+    }
+    .search:focus{
+         box-shadow:none !important;
+           outline:0px !important;
+    }
+    .type_msg{
+      background-color: rgba(0,0,0,0.3) !important;
+      border:0 !important;
+      color:white !important;
+      height: 60px !important;
+      overflow-y: auto;
+    }
+      .type_msg:focus{
+         box-shadow:none !important;
+           outline:0px !important;
+    }
+    .attach_btn{
+  border-radius: 15px 0 0 15px !important;
+  background-color: rgba(0,0,0,0.3) !important;
+      border:0 !important;
+      color: white !important;
+      cursor: pointer;
+    }
+    .send_btn{
+  border-radius: 0 15px 15px 0 !important;
+  background-color: rgba(0,0,0,0.3) !important;
+      border:0 !important;
+      color: white !important;
+      cursor: pointer;
+    }
+    .search_btn{
+      border-radius: 0 15px 15px 0 !important;
+      background-color: rgba(0,0,0,0.3) !important;
+      border:0 !important;
+      color: white !important;
+      cursor: pointer;
+    }
+    .contacts{
+      list-style: none;
+      padding: 0;
+    }
+    .contacts li{
+      width: 100% !important;
+      padding: 5px 10px;
+      margin-bottom: 15px !important;
+    }
+  .active{
+      background-color: rgba(0,0,0,0.3) !important;
+  }
+  .friend_active:hover{
+    background-color: rgba(0,0,0,0.3) !important;
+  }
+
+    .user_img{
+      height: 70px;
+      width: 70px;
+      border:1.5px solid #f5f6fa;
+    
+    }
+    .user_img_msg{
+      height: 40px;
+      width: 40px;
+      border:1.5px solid #f5f6fa;
+    
+    }
+  .img_cont{
+      position: relative;
+      height: 70px;
+      width: 70px;
+  }
+  .img_cont_msg{
+      height: 40px;
+      width: 40px;
+  }
+  .online_icon{
+    position: absolute;
+    height: 15px;
+    width:15px;
+    background-color: #4cd137;
+    border-radius: 50%;
+    bottom: 0.2em;
+    right: 0.4em;
+    border:1.5px solid white;
+  }
+  .offline{
+    background-color: #c23616 !important;
+  }
+  .user_info{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 15px;
+  }
+  .user_info span{
+    font-size: 20px;
+    color: white;
+  }
+  .user_info p{
+  font-size: 10px;
+  color: rgba(255,255,255,0.6);
+  }
+  .video_cam{
+    margin-left: 50px;
+    margin-top: 5px;
+  }
+  .video_cam span{
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 20px;
+  }
+  .msg_cotainer{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+    border-radius: 25px;
+    background-color: #82ccdd;
+    padding: 10px;
+    position: relative;
+  }
+  .msg_cotainer_send{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+    border-radius: 25px;
+    background-color: #78e08f;
+    padding: 10px;
+    position: relative;
+  }
+  .msg_time{
+    position: absolute;
+    left: 0;
+    bottom: -15px;
+    color: rgba(255,255,255,0.5);
+    font-size: 10px;
+  }
+  .msg_time_send{
+    position: absolute;
+    right:0;
+    bottom: -15px;
+    color: rgba(255,255,255,0.5);
+    font-size: 10px;
+  }
+  .msg_head{
+    position: relative;
+  }
+  #action_menu_btn{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  #action_menu_btn_pro{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  .action_menu{
+    z-index: 1;
+    position: absolute;
+    padding: 15px 0;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border-radius: 15px;
+    top: 30px;
+    right: 15px;
+    display: none;
+  }
+
+  .action_menu_pro{
+    z-index: 1;
+    position: absolute;
+    padding: 15px 0;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border-radius: 15px;
+    top: 30px;
+    right: 15px;
+    display: none;
+  }
+  .action_menu ul{
+    list-style: none;
+    padding: 0;
+  margin: 0;
+  }
+  .action_menu ul li{
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+  }
+  .action_menu ul li i{
+    padding-right: 10px;
+  
+  }
+  .action_menu ul li:hover{
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.2);
+  }
+
+  .action_menu_pro ul{
+    list-style: none;
+    padding: 0;
+  margin: 0;
+  }
+  .action_menu_pro ul li{
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+  }
+  .action_menu_pro ul li i{
+    padding-right: 10px;
+  
+  }
+  .action_menu_pro ul li:hover{
+    cursor: pointer;
+    background-color: rgba(0,0,0,1.2);
+  }
+  @media(max-width: 576px){
+  .contacts_card{
+    margin-bottom: 15px !important;
+  }
   }
 </style>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#action_menu_btn').click(function(){
+      $('.action_menu').toggle();
+    });
+      $('#action_menu_btn_pro').click(function(){
+      $('.action_menu_pro').toggle();
+    });
+  });
+  function myFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("mytable");
+    tr = table.getElementsByTagName("li");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("span")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }       
+    }
+  }
+</script>

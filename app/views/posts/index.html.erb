@@ -12,15 +12,15 @@
       	<td><%= post.user.username %></td>
         <td><%= post.title %></td>
         <td><%= post.description %></td>
-        <td><%= link_to "show", post %></td>
-        <td><%= link_to "Edit", edit_post_path(post) %></td>
+        <td><%= link_to "show", post, class: "btn btn-outline-warning" %></td>
+        <td><%= link_to "Edit", edit_post_path(post), class: "btn btn-outline-primary" %></td>
         <td><%= link_to "Destroy", post_path(post), data: {turbo_method: :delete,
-        turbo_confirm: "Are you sure?"} %></td>
+        turbo_confirm: "Are you sure?"}, class: "btn btn-outline-danger" %></td>
       </tr>
     <% end %>
   </tbody>
-</table>
-<%= link_to "New Article", new_post_path ,class: "btn btn-outline-primary"%>
+</table><br>
+<%= link_to "New Article", new_post_path ,class: "btn btn-outline-success"%>
 <style>
 * {
   box-sizing: border-box;
@@ -57,3 +57,5 @@
   background-color: #f1f1f1;
 }
 </style>
+
+
