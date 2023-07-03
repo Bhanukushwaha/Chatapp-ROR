@@ -1,26 +1,40 @@
-<h2>Log in</h2>
+<section class="vh-100" style="background-image:url('/assets/wallpaper.gif'); background-size : cover;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class=" shadow-2-strong" style="border-radius: 1rem; background-color: #45CFDD; opacity: 0.9;">
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
+            <div class="card-body p-3 text-center">
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+              <h3 class="mb-3"><button type="button" class="btn btn-link btn-floating ">
+                <i class="fab fa-google"></i>
+              </button>Log in</h3>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+              <div class="form-outline mb-2">
+                <label class="" for="typeEmailX-2">Email</label>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-control-lg", placeholder: "Enter your Email" %>
+              </div>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+              <div class="form-outline mb-4">
+                <label class="form-label" for="typePasswordX-2">Password</label>
+                <%= f.password_field :password, autocomplete: "current-password", class: "form-control form-control-lg", placeholder: "Enter the your password" %>
+              </div>
+
+              <!-- Checkbox -->
+              <div class="form-check d-flex justify-content-start mb-4">
+                <input class="form-check-input" type="checkbox" value="" id="form1Example3" />
+                <label class="form-check-label" for="form1Example3"> Remember password </label>
+              </div> 
+
+              <%= f.submit "Login", class: "btn btn-primary btn-lg btn-block" %>
+              <hr class="my-4">             
+              <%= link_to "Sign up ", new_registration_path(resource_name), class: "btn btn-lg btn-block btn-warning" %>
+              <%= link_to "Forgot your password?", new_password_path(resource_name), class: "btn btn-lg btn-block btn-primary mb-2", style: "background-color: #3b5998;"%>  
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</section>

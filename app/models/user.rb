@@ -12,4 +12,23 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
+  def status
+    return 'online_icon offline' if last_request_at.nil?
+    DateTime.now.to_time - last_request_at.to_time > 300 ? 'online_icon offline' : 'online_icon'
+  end
+  def is_online
+    return 'offline' if last_request_at.nil?
+    DateTime.now.to_time - last_request_at.to_time > 300 ? 'offline' : 'online'
+  end
+
+  def check_for_time
+    if last_request_at + 24.hours < DateTime.now
+      return 'yestarday'
+    elsif last_request_at + 48.hours < DateTime.now
+        return last_request_at.strftime("%I:%M %p %d")
+    else
+      return last_request_at.strftime("%I:%M %p")
+    end
+
+  end
 end

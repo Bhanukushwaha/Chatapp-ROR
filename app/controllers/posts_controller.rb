@@ -2,6 +2,7 @@ class PostsController < ApplicationController
 	def index
 		@posts = Post.all
 	end
+
 	def show
     @post = Post.find(params[:id])
   end
@@ -27,7 +28,7 @@ class PostsController < ApplicationController
     user = @post.user
     @post.likes.create(user_id: current_user.id)
     if current_user.id != @post.user_id
-       LikePostMailer.with(user: user).like_post_email.deliver_now   
+      LikePostMailer.with(user: user).like_post_email.deliver_now   
       # redirect_to post_path(@post)
     end
   end

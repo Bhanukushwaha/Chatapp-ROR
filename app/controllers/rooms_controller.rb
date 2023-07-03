@@ -11,6 +11,7 @@ class RoomsController < ApplicationController
   end
 
   def show
+  	@user = User.find_by(username: params[:name])
     @room_user_name = params[:name]
 	  @current_user = current_user
 	  @friends3 = current_user.receive_requests.where(is_accept: true)

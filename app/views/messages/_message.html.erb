@@ -1,16 +1,19 @@
 <div class="cont-<%= message.user.id %>">
   <div class="message-box msg-<%= message.user.id %> ">    
     <%= message.content %></br><%= message.created_at.strftime("%I:%M %p") %>
+    <%= link_to "Destroy", message_path, data: {turbo_method: :delete,
+        turbo_confirm: "Are you sure?"} %>
   </div>
 </div>
   <!-- <source src="/sendmess.mp3" type="audio/mpeg"> -->
 
-<audio id="audio-alert" src="/sendmess.mp3" autoplay ></audio>
+<audio id="audio-alert" src="/audio.mp3" autoplay ></audio>
 <script>
   $(document).ready(function() {
     const newNameInput = document.getElementById("chat-text");
     const name = newNameInput.value;
     newNameInput.value = "";
+    
   });
   // $('#audio-alert').play();
 </script>

@@ -17,6 +17,9 @@ class FriendsController < ApplicationController
     @friend = User.find_by_id(params[:receiver_id])
     if @single_room.present?
       redirect_to "/rooms/#{@single_room.id}?name=#{params[:user_name]}"
+      # redirect_to room_path(@single_room.id, name: params[:user_name])
+    else
+      redirect_to root_path
     end
   end
 end

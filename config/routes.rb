@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   resources :rooms do
    resources :messages
   end
+  delete "/message/:id" => "messages#delete", as: :delete_message
   resources :users
   # root 'rooms#index'
 end
