@@ -8,7 +8,8 @@
             <span class="online_icon"></span>
           </div>
           <div class="user_info ">
-            <span><%= @current_user.username %></span>                
+            <span><%= @current_user.username %></span>
+            <p>online</p>              
           </div>
         </div>
         <span id="action_menu_btn_pro"><i class="fas fa-ellipsis-v"></i></span>
@@ -41,8 +42,13 @@
                       <span class="<%= friend.receiver.status %>"></span>
                     </div>
                     <div class="user_info">
-                      <span><%= friend.receiver.username %>  <%#= friend.receiver.id %></span>
-                      <p>Sami is online</p>
+                      <span><%= friend.receiver.username %>  <%= friend.receiver.id %></span>
+                      <p><% if friend.receiver&.is_online == "offline" %>
+                          <%= friend.receiver&.check_for_time %>
+                          <% else %>
+                            <%= friend.receiver&.is_online %>
+                          <% end %>
+                      </p>
                     </div>
                   </div>
                 </li>
@@ -53,11 +59,15 @@
                   <div class="d-flex bd-highlight">
                     <div class="img_cont">
                       <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
-                      <span class="<%= friend.sender.status %>"></span>
+                      <span class="<%= friend.sender.status %>"> </span>
                     </div>
                     <div class="user_info">
-                      <span><%= friend.sender.username %><%#= friend.sender.id %></span>
-                      <p>Sami is online</p>
+                      <span><%= friend.sender.username %> | <%= friend.sender.id %></span>
+                      <p><% if friend.sender&.is_online == "offline" %>
+                          <%= friend.sender&.check_for_time %>
+                          <% else %>
+                            <%= friend.sender&.is_online %>
+                          <% end %></p>
                     </div>
                   </div>
                 </li>
@@ -78,7 +88,8 @@
             </div>
             <div class="user_info">
               <span><%= @user&.username %></span>
-              <p style="font-size: 14px;"><%= @user&.is_online %></p>
+              <p style="font-size: 14px;"><%= @user&.is_online %>               
+              </p>
             </div>
             <div class="video_cam">
               <span><i class="fas fa-video"></i></span>
@@ -135,7 +146,8 @@
 
 <script type="text/javascript">
   var refresh = window.localStorage.getItem('refresh');
-    console.log(refresh);
+    console.log(refresh)
+;
       if (refresh===null){
           window.location.reload();
           window.localStorage.setItem('refresh', "1");

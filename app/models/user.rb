@@ -27,8 +27,7 @@ class User < ApplicationRecord
     elsif last_request_at + 48.hours < DateTime.now
         return last_request_at.strftime("%I:%M %p %d")
     else
-      return last_request_at.strftime("%I:%M %p")
+      return last_request_at.strftime("%I:%M %p today")
     end
-
   end
 end
