@@ -34,7 +34,7 @@
          <%#= turbo_stream_from "users" %>
           <% @friends.each do |friend| %>
             <% if (friend.sender.id == current_user.id) &&  friend.is_sender %>
-              <%= link_to message_path(sender_id: friend.receiver.id, receiver_id: current_user.id, user_name: friend.receiver.username) do %>
+              <%= link_to message_path(sender_id: friend.receiver.id, receiver_id: current_user.id, user_name: friend.receiver.username, notification_id: find_notification(friend.receiver.id, current_user.id)) do %>
                 <li class="friend_active <%= ((friend.receiver.username == params[:name]) || (friend.sender.username == params[:name])) ? 'active' : '' %>">
                   <div class="d-flex bd-highlight">
                     <div class="img_cont">
@@ -42,7 +42,7 @@
                       <span class="<%= friend.receiver.status %>"></span>
                     </div>
                     <div class="user_info">
-                      <span><%= friend.receiver.username %>  <%= friend.receiver.id %></span>
+                      <span><%= friend.receiver.username %> <%#= friend.receiver.id %></span>                      
                       <p><% if friend.receiver&.is_online == "offline" %>
                           <%= friend.receiver&.check_for_time %>
                           <% else %>
@@ -50,11 +50,14 @@
                           <% end %>
                       </p>
                     </div>
+                    <div class="video_cam">
+                      <span><%= check_count_message(friend.receiver.id, current_user.id)%></span>
+                    </div>
                   </div>
                 </li>
               <% end %>
             <% else %>
-              <%= link_to message_path(sender_id: friend.sender_id, receiver_id: current_user.id, user_name: friend.sender.username) do %>
+              <%= link_to message_path(sender_id: friend.sender_id, receiver_id: current_user.id, user_name: friend.sender.username, notification_id: find_notification(friend.sender.id, current_user.id)) do %>
                 <li class="friend_active <%= ((friend.receiver.username == params[:name]) || (friend.sender.username == params[:name])) ? 'active' : '' %>">
                   <div class="d-flex bd-highlight">
                     <div class="img_cont">
@@ -62,12 +65,18 @@
                       <span class="<%= friend.sender.status %>"> </span>
                     </div>
                     <div class="user_info">
-                      <span><%= friend.sender.username %> | <%= friend.sender.id %></span>
-                      <p><% if friend.sender&.is_online == "offline" %>
+                      <span><%= friend.sender.username %> <%#= friend.sender.id %></span>
+                      <p>
+                        <% if friend.sender&.is_online == "offline" %>
                           <%= friend.sender&.check_for_time %>
-                          <% else %>
-                            <%= friend.sender&.is_online %>
-                          <% end %></p>
+                        <% else %>
+                          <%= friend.sender&.is_online %>
+                        <% end %>
+                      </p>
+                      <!-- <p>99</p> -->
+                    </div>
+                    <div class="video_cam">
+                      <span><%= check_count_message(friend.sender.id, current_user.id)%> </span>
                     </div>
                   </div>
                 </li>
@@ -91,10 +100,10 @@
               <p style="font-size: 14px;"><%= @user&.is_online %>               
               </p>
             </div>
-            <div class="video_cam">
+            <!-- <div class="video_cam">
               <span><i class="fas fa-video"></i></span>
               <span><i class="fas fa-phone"></i></span>
-            </div>
+            </div> -->
           </div>
           <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
           <div class="action_menu">
@@ -126,6 +135,9 @@
           <div class="card-footer">
             <%= form_with(model: [@single_room ,@message], remote: true ) do |f| %>
               <div class="input-group">
+                <%#= hidden_field_tag "receiver_id" ,nil, value: @user.id %>
+                <!-- <input type="hidden" name="receiver_id" value="<%= @user.id %>"> -->
+                <%= f.hidden_field :receiver_id, value: @user.id %>
                 <!-- <div class="input-group-append">
                   <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
                 </div> -->
@@ -170,8 +182,7 @@
       function resetScroll() {
         messages.scrollTop = messages.scrollHeight - messages.clientHeight;
       }
-    }
-    
+    }    
   });
   function myFunction() {
     var input, filter, table, tr, td, i, txtValue;

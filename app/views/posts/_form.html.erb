@@ -1,17 +1,17 @@
 
 <%= form_with(model: @post) do |form| %>
-  <% if @post.errors.any? %>
+  <!-- <%# if @post.error.present? %>
     <div style="color: red">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this @post from being saved:</h2>
+      <h2><%#= pluralize(@post.errors.count, "error") %> prohibited this @post from being saved:</h2>
 
       <ul>
-        <% @post.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
+        <%# @post.errors.each do |error| %>
+          <li><%#= error.full_message %></li>
+        <%# end %>
       </ul>
     </div>
-  <% end %>
-
+  <%# end %>
+ -->
   <div>
     <%= form.label :tilte, style: "display: block" %>
     <%= form.text_field :title %>

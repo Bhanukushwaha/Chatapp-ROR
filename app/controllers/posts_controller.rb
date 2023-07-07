@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
 	def index
-		@posts = Post.all
+		# @posts = Post.all
+    @posts = current_user.posts
 	end
 
 	def show
@@ -52,7 +53,6 @@ class PostsController < ApplicationController
   end
   def update
     @post = Post.find(params[:id])
-
     if @post.update(post_params)
       redirect_to @post
     else
@@ -63,7 +63,6 @@ class PostsController < ApplicationController
   def destroy
     @post = Post.find(params[:id])
     @post.destroy
-
     redirect_to post_path, status: :see_other
   end
 

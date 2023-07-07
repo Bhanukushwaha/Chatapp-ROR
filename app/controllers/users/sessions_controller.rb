@@ -9,6 +9,20 @@ class Users::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
+    user =  User.where(email:  params[:user][:email]).first
+    if user
+      if user.valid_password?(params[:user][:password])
+        @valid = true
+        sign_in(user)
+      else
+        @error = {message: "Your entered incorrect password?", email: true}
+      end
+    else
+      @error = {message: "User Not Found", email: false}
+      respond_to do |format|
+        format.js             
+      end
+    end
   end
 
   # DELETE /resource/sign_out

@@ -16,6 +16,8 @@ class FriendsController < ApplicationController
    @single_room = Room.find_by(sender_id: params[:sender_id].to_i, receiver_id: params[:receiver_id].to_i) || Room.find_by(sender_id: params[:receiver_id].to_i, receiver_id: params[:sender_id].to_i)
     @friend = User.find_by_id(params[:receiver_id])
     if @single_room.present?
+      notification = Notification.where(id: params[:notification_id])
+      notification.update(is_read: true)
       redirect_to "/rooms/#{@single_room.id}?name=#{params[:user_name]}"
       # redirect_to room_path(@single_room.id, name: params[:user_name])
     else

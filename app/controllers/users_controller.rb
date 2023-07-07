@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     @user = User.find_by_id(params[:user])
     if (params[:password] == params[:password_confirmation])
       @user.update(password: params[:password], password_confirmation: params[:password_confirmation])
-      redirect_to "/" 
+      redirect_to "/"
     else
       @error = "password not match"
     end

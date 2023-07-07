@@ -1,18 +1,16 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: %i[ show edit update destroy ]
-
   # GET /students or /students.json
   def index
     @users = User.where.not(id: current_user.id)
   end
-
   
   def add_friend
     if @frinds = Friend.where(sender_id: params[:receiver_id], receiver_id:  current_user.id).present?
       redirect_to my_request_path
     else
       @frinds = Friend.create(sender_id: current_user.id, receiver_id: params[:receiver_id], is_sender: true)
-      redirect_to students_url 
+      redirect_to students_url
     end
   end
 
@@ -22,7 +20,7 @@ class StudentsController < ApplicationController
     if params[:cancel_request]
       redirect_to my_request_path
     else
-     redirect_to students_path
+      redirect_to students_path
     end
   end
 

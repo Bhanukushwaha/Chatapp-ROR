@@ -5,11 +5,11 @@
      <%= submit_tag "likes(#{post.likes.count})", :name => nil %>
     </p>
   <% end %>
- <% else %>
+<% else %>
   <%= form_tag '/unlike', :method => 'get',remote: true do %>
-   <%= hidden_field_tag "post_id" ,nil ,:value => post.id%>
+    <%= hidden_field_tag "post_id" ,nil ,:value => post.id%>
     <p>
      <%= submit_tag "unlike(#{post.likes.count})", :name => nil %>
-    </p>     
+    </p>
   <% end %>
 <%end%>
