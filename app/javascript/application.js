@@ -4,3 +4,4 @@ import "controllers"
 import "jquery"
 import "jquery_ujs"
 import "bootstrap"
+import './custom/main'
