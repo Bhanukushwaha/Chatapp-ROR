@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   def create
     @current_user = current_user
     @notification = Notification.create(user_id: current_user.id, receiver_id: params[:message][:receiver_id].to_i)
-    @message = @current_user.messages.create(content: msg_params[:content], room_id: params[:room_id])
+    @message = @current_user.messages.create(content: msg_params[:content], room_id: params[:room_id], receiver_id: params[:message][:receiver_id].to_i)
   end
 
   def delete

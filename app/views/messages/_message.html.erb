@@ -4,9 +4,9 @@
   </div>
 </div>
   <!-- <source src="/sendmess.mp3" type="audio/mpeg"> -->
-
 <audio id="audio-alert" src="/audio.mp3" autoplay ></audio>
 <script>
+  $("#notification_count_<%= message.receiver_id%>").html("<%= escape_javascript(render partial: 'layouts/notification', locals: {message: message} )%>");
   $(document).ready(function() {
     const newNameInput = document.getElementById("chat-text");
     const name = newNameInput.value;

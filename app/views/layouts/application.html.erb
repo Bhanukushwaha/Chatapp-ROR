@@ -4,11 +4,11 @@
     <title>Chatapp2</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>    
+    <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>   
@@ -36,11 +36,18 @@
           <li class="nav-item <%= (params[:controller] == "friends" && params[:action] == "friend_list") ? 'active' : "" %>">
             <a class="nav-link" href="/friend_list">Friends</a>
           </li>
-          <li class="nav-item <%= (params[:controller] == "rooms") ? 'active' : "" %>">
-            <a class="nav-link" href="/rooms">Massage
-              (1)
-            </a>
-          </li>
+          <% if current_user.present? %>
+            <li class="nav-item <%= (params[:controller] == "rooms") ? 'active' : "" %>">
+              <div id="notification_count_<%= current_user.id %>">
+                <% notification_count = current_user.notifications.where(is_read_header: false).count %>
+                <% if notification_count > 0 %>
+                  <a class="nav-link" href="/rooms">Massage(<%= notification_count %>)</a>
+                <% else %>
+                  <a class="nav-link" href="/rooms">Massage</a>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
           <!-- <li class="nav-item">
             <a class="nav-link" href="/rooms"><span><i class="fas fa-bell"></i></span></a>
           </li> -->
@@ -114,6 +121,5 @@
   body{
     background-image:url('/assets/image8.jpg');
     background-size : cover;
-  }*/
-  
+  }*/  
 </style>

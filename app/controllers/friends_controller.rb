@@ -13,7 +13,7 @@ class FriendsController < ApplicationController
   end
 
   def messages
-   @single_room = Room.find_by(sender_id: params[:sender_id].to_i, receiver_id: params[:receiver_id].to_i) || Room.find_by(sender_id: params[:receiver_id].to_i, receiver_id: params[:sender_id].to_i)
+    @single_room = Room.find_by(sender_id: params[:sender_id].to_i, receiver_id: params[:receiver_id].to_i) || Room.find_by(sender_id: params[:receiver_id].to_i, receiver_id: params[:sender_id].to_i)
     @friend = User.find_by_id(params[:receiver_id])
     if @single_room.present?
       notification = Notification.where(id: params[:notification_id])

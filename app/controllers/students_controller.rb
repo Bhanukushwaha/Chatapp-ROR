@@ -29,7 +29,7 @@ class StudentsController < ApplicationController
     @frind.update(is_accept: true)
     @room = Room.create(sender_id: params[:sender_id], receiver_id: current_user.id)
     redirect_to students_path
-   end
+  end
 
   def my_request
     @receive = current_user.receive_requests

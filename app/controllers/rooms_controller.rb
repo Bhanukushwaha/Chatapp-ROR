@@ -8,6 +8,7 @@ class RoomsController < ApplicationController
     @rooms = Room.public_rooms
     @users = User.all_except(@current_user)
     @room = Room.new
+    current_user.notifications.update_all(is_read_header: true)
   end
 
   def show
