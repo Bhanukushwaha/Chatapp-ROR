@@ -2,9 +2,13 @@ class StudentsController < ApplicationController
   before_action :set_student, only: %i[ show edit update destroy ]
   # GET /students or /students.json
   def index
-    @users = User.where.not(id: current_user.id)
+    if params[:username].present?
+      @users = User.where("username ILIKE ?", "%#{params[:username]}%")
+    else
+      @users = User.where.not(id: current_user.id)
+    end
   end
-  
+       
   def add_friend
     if @frinds = Friend.where(sender_id: params[:receiver_id], receiver_id:  current_user.id).present?
       redirect_to my_request_path

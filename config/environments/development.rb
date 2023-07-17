@@ -68,6 +68,18 @@ config.hosts << "b25b-103-153-208-74.ngrok-free.app"
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
-  config.action_mailer.delivery_method = :letter_opener
-  config.action_mailer.perform_deliveries = true
+  # config.action_mailer.delivery_method = :letter_opener
+  # config.action_mailer.perform_deliveries = true
+  routes.default_url_options[:host] = ENV['HOME_URL']
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.smtp_settings = {
+    address:              ENV['SMTP_ADDRESS'],
+    port:                 ENV['SMTP_PORT'],
+    user_name:            ENV['SMTP_USERNAME'],
+    password:             ENV['SMTP_PASS'],
+    authentication:      :login,
+    enable_starttls_auto: true,
+    openssl_verify_mode: "none"
+  }
 end

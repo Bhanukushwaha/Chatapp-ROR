@@ -4,4 +4,5 @@ class Post < ApplicationRecord
  has_many :comments, dependent: :destroy
  has_many :likes, dependent: :destroy
  validates :title, presence: true
+ default_scope {order('created_at DESC')}
 end

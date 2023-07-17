@@ -78,3 +78,8 @@ gem 'jquery-ui-rails'
 gem 'turbolinks'
 gem 'carrierwave'
 gem "letter_opener", group: :development
+gem 'figaro'
+gem 'dotenv-rails', require: 'dotenv/rails-now' #this gem use only for .env file
+# gem 'will_paginate'
+gem 'kaminari'
+gem 'will_paginate-bootstrap-style'

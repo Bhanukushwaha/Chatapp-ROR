@@ -43,6 +43,7 @@ class PostsController < ApplicationController
   end
 
   def create
+    # @post = Post.new(title: params[:post][:title], description: params[:post][:description], image: params[:post][:image])
     @post = Post.new(post_params)
     @post.user_id = current_user.id
     if @post.save

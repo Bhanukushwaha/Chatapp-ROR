@@ -5,3 +5,6 @@ import "jquery"
 import "jquery_ujs"
 import "bootstrap"
 import './custom/main'
+import './library/jquery.slim.min'
+import './library/jquery.validate.min'
+import './library/scrollbar.min'

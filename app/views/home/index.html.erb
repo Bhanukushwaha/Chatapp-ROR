@@ -65,6 +65,7 @@
     </div>
   </section>
 <% end %> 
+<%= will_paginate @posts, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
 <script type="text/javascript">
   function myFunction() {
     var input, filter, table, tr, td, i, txtValue;

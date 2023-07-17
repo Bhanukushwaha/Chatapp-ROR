@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
   def reset_password
-    @user = User.find_by_id(params[:id])
+    # begin
+    #   @user = User.find(params[:id])
+    # rescue StandardError => e
+    #   puts e
+    # end
+    @user = User.find(params[:id])
   end
 
   def password_update
