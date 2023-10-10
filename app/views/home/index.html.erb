@@ -9,11 +9,11 @@
                 <div>
                 <strong class="fw-bold text-primary">
                   <%= post.user.username %>
-                </strong>                     
+                </strong>
                 <strong>Title:</strong>
                 <%= post.title %>
                 <strong>description:</strong>
-                <%= post.description %>                
+                <%= post.description %>
                 <p class="text-muted small mb-0">
                   <strong>Shared publicly:-</strong>
                   <%= post.created_at.strftime("%d-%b-%Y / %R") %>
@@ -49,7 +49,7 @@
                     <p>
                       <%= text_field_tag :title, nil, :required => true%>
                       <%= submit_tag "submit", :name => nil %>
-                    </p> 
+                    </p>
                   <% end %>
                 </div>
               </div>

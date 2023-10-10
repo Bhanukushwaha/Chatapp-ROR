@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {sessions: "users/sessions", :registrations => "users/registrations", :passwords => "users/passwords"}
   resources :students
+  mount ActionCable.server => '/cable'
+
   root "home#index"
-  get 'user_modal' => "friends#user_modal"
   get 'like' =>'posts#like', as: :like
   get 'unlike' =>'posts#unlike', as: :unlike
   resources :posts do
@@ -27,13 +28,9 @@ Rails.application.routes.draw do
   post '/reset_password', to: 'users#password_update'
   get '/reset_password', to: "users#reset_password"
   patch '/users/:id', to: 'users#password_update'
-  # get '/signin', to: 'sessions#new'
-  # post '/signin', to: 'sessions#create'
-  # delete '/signout', to: 'sessions#destroy'
   resources :rooms do
    resources :messages
   end
   delete "/message/:id" => "messages#delete", as: :delete_message
   resources :users
-  # root 'rooms#index'
 end

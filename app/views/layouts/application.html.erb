@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= action_cable_meta_tag %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
@@ -53,19 +54,17 @@
         </ul>
         <ul class="navbar-nav my-2 my-lg-0">      
           <% if user_signed_in? %>
-          <li class="nav-item">
-            <strong class="nav-link"><%= current_user.email %>(<%= current_user.id %>)</strong>
-          </li>
-          <%= link_to "Logout", destroy_user_session_path, class: "nav-link", method: :delete %>
-            <%#= link_to "modal", user_modal_path, remote: true , class: "nav-link" %>
-            <%= link_to 'Show', user_modal_path, :class=>"btn btn-info", :remote => true, 'data-toggle' => "modal", 'data-target' => '#exampleModalLong2' %>
+            <li class="nav-item">
+              <strong class="nav-link"><%= current_user.email %>(<%= current_user.id %>)</strong>
+            </li>
+            <%= link_to "Logout", destroy_user_session_path, class: "nav-link", method: :delete %>
           <% else %>
             <%= link_to "Sign up", new_user_registration_path, class: "nav-link"  %> 
             <%= link_to "Login", new_user_session_path, class: "nav-link"  %>
           <% end %>
         </ul>        
       </div>
-    </nav>      
+    </nav>
     <div id="remote_container"></div>
     <div class="FlashNotice">
       <% flash.each do |key, value| %>
@@ -78,23 +77,7 @@
     <%= yield %>
   </body>
 </html>
-<div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="eModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>        
-      </div>      
-      <div class="modal-body">        
-      </div>
-      <div class="modal-footer">        
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>      
-      </div>
-    </div>
-  </div>
-</div>
+
 <style>
   <%= ".msg-#{current_user&.id}" %> {
   background-color: #78e08f !important;

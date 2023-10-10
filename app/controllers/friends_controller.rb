@@ -2,10 +2,6 @@ class FriendsController < ApplicationController
   def index
   end
 
-  def user_modal
-    @user = User.new
-  end
-  
   def friend_list
     @friends1 = current_user.receive_requests.where(is_accept: true)
     @friends2 = current_user.send_requests.where(is_accept: true)

@@ -30,14 +30,13 @@
                 <%= form_tag '/comment',remote: true, :method => 'get' do %>
                   <%= hidden_field_tag "post_id" ,nil, value:  @post.id %>
                   <%= hidden_field_tag "user_id" ,nil, value:  current_user.id %>
-                  <p>
+                  <div class="">
                     <%= text_field_tag :title %>
                     <%= submit_tag "Comment",:name => nil %>
-                  </p>
+                    <%= link_to "Back", posts_path, class: "btn btn-outline-primary btn-sm"%>
+                  </div>
+
                 <% end %>
-                <p class="" style="margin-left: 53%;">                
-                <%= link_to "Back", posts_path, class: "btn btn-outline-primary btn-sm" %>
-              </p>
               </div>
             </div>
           </div>

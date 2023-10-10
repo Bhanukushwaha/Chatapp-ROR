@@ -18,10 +18,10 @@ class PostsController < ApplicationController
 
   def comment
     @post = Post.find(params[:post_id].to_i)
-    @comment = @post.comments.create(title: params[:title], user_id: current_user.id )
-    if current_user.id != @post.user_id
-      CommentPostMailer.with(user: @comment.user).comment_post_email.deliver_now
-    end
+    @comment = @post.comments.create(title: params[:title], user_id: current_user.id)
+    # if current_user.id != @post.user_id
+    #   CommentPostMailer.with(user: @comment.user).comment_post_email.deliver_now
+    # end
   end
 
   def like
@@ -52,6 +52,7 @@ class PostsController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
+  
   def update
     @post = Post.find(params[:id])
     if @post.update(post_params)
